@@ -13,6 +13,7 @@ const initializeUdevMonitor = ({ udev = true, kernal = false, property = true, s
             if (!eventEmitter || typeof eventEmitter !== "object" || !eventEmitter instanceof events.EventEmitter) {
                 return reject("Event emitter not found")
             }
+            let skipFirstData = true;
             const udevMonitorCmd = "udevadm";
             const udevMonitorArgs = ["monitor"];
             if (udev) {
@@ -36,6 +37,10 @@ const initializeUdevMonitor = ({ udev = true, kernal = false, property = true, s
             const udevadmMonitor = spawn(udevMonitorCmd, udevMonitorArgs);
 
             udevadmMonitor.stdout.on('data', (data) => {
+                if(skipFirstData){
+                    skipFirstData = false
+                    return
+                }
                 eventEmitter.emit("data", organizeMessage(data.toString()))
             });
 
