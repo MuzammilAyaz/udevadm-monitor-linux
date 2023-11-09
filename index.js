@@ -36,8 +36,6 @@ const initializeUdevMonitor = ({ udev = true, kernal = false, property = true, s
             const udevadmMonitor = spawn(udevMonitorCmd, udevMonitorArgs);
 
             udevadmMonitor.stdout.on('data', (data) => {
-                console.log("Data");
-                console.log(data.toString());
                 eventEmitter.emit("data", organizeMessage(data.toString()))
             });
 
@@ -57,7 +55,23 @@ const initializeUdevMonitor = ({ udev = true, kernal = false, property = true, s
 }
 
 const organizeMessage = (data) => {
-    return data;
+    let returnObject = { additional_data: [] }
+    const filteringByPara = data.split("/n");
+    for (const items of filteringByPara) {
+        const filteringByLines = items.split("\n");
+        for (const data of filteringByLines) {
+            const filteringByKeyValue = data.split("=");
+            if (filteringByKeyValue.length == 2) {
+                returnObject[filteringByKeyValue[0]] = filteringByKeyValue[1];
+            }else if(filteringByKeyValue[0].includes("UDEV ")){
+                returnObject["LINK"] = filteringByKeyValue[0]
+            }
+             else if (filteringByKeyValue[0]) {
+                returnObject.additional_data.push(filteringByKeyValue[0]);
+            }
+        }
+    }
+    return returnObject;
 }
 
 module.exports = { initializeUdevMonitor }
