@@ -1,0 +1,19 @@
+{
+  "name": "udevadm-monitor-linux",
+  "version": "1.0.0",
+  "description": "Basic application to monitor usb pluggin",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MuzammilAyaz/udevadm-monitor-linux.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MuzammilAyaz/udevadm-monitor-linux/issues"
+  },
+  "homepage": "https://github.com/MuzammilAyaz/udevadm-monitor-linux#readme"
+}
